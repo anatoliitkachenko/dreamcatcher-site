@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI-аналіз снів за методом Юнга</title>
+<title><p id="subtitle-main">AI-аналіз снів за методом Юнга</p></title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,10 +18,10 @@
       </div>
       <div class="header-center">
         <nav class="main-nav">
-          <a href="#about">Для кого</a>
-          <a href="#pricing">Ціни</a>
-          <a href="#faq">FAQ</a>
-          <a href="#contacts">Контакти</a>
+          <a id="menu-forwhom" href="#about">Для кого</a>
+          <a id="menu-pricing" href="#pricing">Ціни</a>
+          <a id="menu-faq" href="#faq">FAQ</a>
+          <a id="menu-contacts" href="#contacts">Контакти</a>
         </nav>
       </div>
       <div class="lang-switcher">
@@ -400,6 +400,13 @@ const apiBaseUrl = window.location.hostname === "localhost"
       heroText2: "Сни — це мова твоєї душі. В них — страхи, бажання, надії і підказки.",
       heroText3: "Всього 5 кроків — і ти побачиш, що стоїть за символами і емоціями сну.",
       heroText4: "🌀 Все анонімно, без реєстрації.",
+      subtitleMain: "AI-аналіз снів за методом Юнга",
+      menuForwhom: "Для кого",
+      menuPricing: "Ціни",
+      menuFaq: "FAQ",
+      menuContacts: "Контакти",
+      
+      
       // ... остальные поля
     },
     ru: {
@@ -410,6 +417,13 @@ const apiBaseUrl = window.location.hostname === "localhost"
       heroText2: "Сны — это язык твоей души. В них — страхи, желания, надежды и подсказки.",
       heroText3: "Всего 5 шагов — и ты увидишь, что стоит за символами и эмоциями сна.",
       heroText4: "🌀 Всё анонимно, без регистрации.",
+      subtitleMain: "AI-анализ снов по методу Юнга",
+      menuForwhom: "Для кого",
+      menuPricing: "Цены",
+      menuFaq: "FAQ",
+      menuContacts: "Контакты",
+      
+      
       // ... остальные поля
     },
     en: {
@@ -420,6 +434,14 @@ const apiBaseUrl = window.location.hostname === "localhost"
       heroText2: "Dreams are the language of your soul. They hold fears, desires, hopes, and clues.",
       heroText3: "Just 5 steps — and you will see what’s behind the symbols and emotions of your dream.",
       heroText4: "🌀 All anonymous, no registration.",
+      subtitleMain: "AI-based dream analysis by Jung's method",
+      menuForwhom: "Who is it for",
+      menuPricing: "Pricing",
+      menuFaq: "FAQ",
+      menuContacts: "Contacts",
+      
+      
+      
       // ... остальные поля
     }
   };
@@ -428,6 +450,11 @@ const apiBaseUrl = window.location.hostname === "localhost"
   document.getElementById('hero-text-2').innerHTML = translations[lang].heroText2;
   document.getElementById('hero-text-3').innerHTML = translations[lang].heroText3;
   document.getElementById('hero-text-4').innerHTML = translations[lang].heroText4;
+  document.getElementById('subtitle-main').textContent = translations[lang].subtitleMain;
+  document.getElementById('menu-forwhom').textContent = translations[lang].menuForwhom;
+  document.getElementById('menu-pricing').textContent = translations[lang].menuPricing;
+  document.getElementById('menu-faq').textContent = translations[lang].menuFaq;
+  document.getElementById('menu-contacts').textContent = translations[lang].menuContacts;
   // Добавляй другие строки по такому же принципу
   localStorage.setItem('siteLang', lang);
   }
