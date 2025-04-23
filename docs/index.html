@@ -53,39 +53,45 @@
     <p id="hero-text-4" data-i18n="heroText4">
       🌀 Все анонімно, без реєстрації.
     </p>
-    <div id="tg-login-section" style="text-align:center; margin-top:2rem;">
-      <div id="tg-login">
-        <script async src="https://telegram.org/js/telegram-widget.js?7"
-          data-telegram-login="DreamHelperPsyBot"
-          data-size="large"
-          data-userpic="false"
-          data-request-access="write"
-          data-onauth="onTelegramAuth(user)">
-        </script>
-      </div>
-      <div id="greeting" style="display:none; margin: 1rem 0; font-size:1.2em;"></div>
-      <form id="pay-form" style="display:none; margin:2rem auto; max-width:320px;" method="POST" action="/create-checkout-session">
-        <input type="hidden" name="user_id" id="tg_user_id">
-        <input type="hidden" name="username" id="tg_username">
-        <input type="hidden" name="first_name" id="tg_firstname">
-        <label for="plan_type" data-i18n="selectPlanLabel">Оберіть тариф:</label>
-        <select name="plan_type" id="plan_type" required style="width:100%; margin: 1rem 0;">
-          <option value="subscription" data-i18n="planSubscription">Підписка на 30 днів — 300 грн</option>
-          <option value="single" data-i18n="planSingle">Одноразовий аналіз — 40 грн</option>
-          <option value="free" data-i18n="planFree">Безкоштовний тариф</option>
-        </select>
-        <button id="pay-btn" type="submit" class="btn btn-primary" style="width:100%;" data-i18n="payBtn">Оплатити доступ</button>
-        <p style="margin-top:0.8rem; font-size:0.93em;" data-i18n="agreementText">
-          Перед оплатою ви погоджуєтесь з <a href="offer.html" target="_blank">офертою</a> та <a href="privacy.html" target="_blank">політикою конфіденційності</a>.
-        </p>
-      </form>
+    <!-- В секции Hero, заменяем часть с tg-login-section -->
+<div id="tg-login-section" style="text-align:center; margin-top:2rem;">
+  <div id="tg-login">
+    <!-- Кастомная кнопка для авторизации через Telegram -->
+    <button id="telegram-login-btn" class="btn btn-primary" data-i18n="telegramLoginBtn">Увійти через Telegram</button>
+    <!-- Скрытый Telegram-виджет для обработки авторизации -->
+    <div id="telegram-widget" style="display:none;">
+      <script async src="https://telegram.org/js/telegram-widget.js?7"
+        data-telegram-login="DreamHelperPsyBot"
+        data-size="large"
+        data-userpic="false"
+        data-request-access="write"
+        data-onauth="onTelegramAuth(user)">
+      </script>
     </div>
-    <a href="https://t.me/DreamHelperPsyBot" target="_blank" class="btn btn-outline-telegram" data-i18n="goToBot">
-      <svg width="20" height="20" style="vertical-align: middle; margin-right: 6px;" viewBox="0 0 240 240">
-        <g fill="none"><circle cx="120" cy="120" r="120" fill="#37AEE2"/><path d="M100.4 171.4c-4.1 0-5.2-1.8-7.2-6.6l-15.3-49.4L162.4 88" fill="#C8DAEA"/><path d="M100.4 171.4c3.1 0 4.5-1.4 6.2-3l16.6-16.1-20.7-12.5" fill="#A9C9DD"/><path d="M106.5 145.8l50 36.7c5.7 3.1 10.6 1.5 12.2-5.2l22.1-103.4c2.3-9.7-3.7-13.9-9.8-11.6L45.9 110.8c-9.3 3.5-9.3 8.6-1.6 10.8l38.1 12 88.4-55.8c4.1-2.5 7.9-1.2 4.8 1.6" fill="#FFF"/></g>
-      </svg>
-      Перейти в бот
-    </a>
+  </div>
+  <div id="greeting" style="display:none; margin: 1rem 0; font-size:1.2em;"></div>
+  <form id="pay-form" style="display:none; margin:2rem auto; max-width:320px;" method="POST" action="/create-checkout-session">
+    <input type="hidden" name="user_id" id="tg_user_id">
+    <input type="hidden" name="username" id="tg_username">
+    <input type="hidden" name="first_name" id="tg_firstname">
+    <label for="plan_type" data-i18n="selectPlanLabel">Оберіть тариф:</label>
+    <select name="plan_type" id="plan_type" required style="width:100%; margin: 1rem 0;">
+      <option value="subscription" data-i18n="planSubscription">Підписка на 30 днів — 300 грн</option>
+      <option value="single" data-i18n="planSingle">Одноразовий аналіз — 40 грн</option>
+      <option value="free" data-i18n="planFree">Безкоштовний тариф</option>
+    </select>
+    <button id="pay-btn" type="submit" class="btn btn-primary" style="width:100%;" data-i18n="payBtn">Оплатити доступ</button>
+    <p style="margin-top:0.8rem; font-size:0.93em;" data-i18n="agreementText">
+      Перед оплатою ви погоджуєтесь з <a href="offer.html" target="_blank">офертою</a> та <a href="privacy.html" target="_blank">політикою конфіденційності</a>.
+    </p>
+  </form>
+</div>
+<a href="https://t.me/DreamHelperPsyBot" target="_blank" class="btn btn-outline-telegram" data-i18n="goToBot">
+  <svg width="20" height="20" style="vertical-align: middle; margin-right: 6px;" viewBox="0 0 240 240">
+    <g fill="none"><circle cx="120" cy="120" r="120" fill="#37AEE2"/><path d="M100.4 171.4c-4.1 0-5.2-1.8-7.2-6.6l-15.3-49.4L162.4 88" fill="#C8DAEA"/><path d="M100.4 171.4c3.1 0 4.5-1.4 6.2-3l16.6-16.1-20.7-12.5" fill="#A9C9DD"/><path d="M106.5 145.8l50 36.7c5.7 3.1 10.6 1.5 12.2-5.2l22.1-103.4c2.3-9.7-3.7-13.9-9.8-11.6L45.9 110.8c-9.3 3.5-9.3 8.6-1.6 10.8l38.1 12 88.4-55.8c4.1-2.5 7.9-1.2 4.8 1.6" fill="#FFF"/></g>
+  </svg>
+  Перейти в бот
+</a>
   </div>
 </section>
 
@@ -403,6 +409,7 @@
       payBtn: 'Оплатити доступ',
       agreementText: `Перед оплатою ви погоджуєтесь з <a href="offer.html" target="_blank">офертою</a> та <a href="privacy.html" target="_blank">політикою конфіденційності</a>.`,
       goToBot: 'Перейти в бот',
+      telegramLoginBtn: 'Увійти через Telegram',
       galleryTitle: 'Приклади робіт',
       galleryItem1: '🧠 Сон про віслюка — повний аналіз (мобільна версія)',
       galleryItem2: '🚂 Потяг без напрямку — короткий кейс (десктоп Telegram)',
@@ -476,6 +483,7 @@
       payBtn: 'Оплатить доступ',
       agreementText: `Перед оплатой вы соглашаетесь с <a href="offer.html" target="_blank">офертой</a> и <a href="privacy.html" target="_blank">политикой конфиденциальности</a>.`,
       goToBot: 'Перейти в бот',
+      telegramLoginBtn: 'Войти через Telegram',
       galleryTitle: 'Примеры работ',
       galleryItem1: '🧠 Сон о козле — полный анализ (мобильная версия)',
       galleryItem2: '🚂 Поезд без направления — короткий кейс (десктоп Telegram)',
@@ -549,6 +557,7 @@
       payBtn: 'Pay for access',
       agreementText: `By paying, you agree to the <a href="offer.html" target="_blank">offer</a> and <a href="privacy.html" target="_blank">privacy policy</a>.`,
       goToBot: 'Go to bot',
+      telegramLoginBtn: 'Log in via Telegram',
       galleryTitle: 'Work examples',
       galleryItem1: '🧠 Dream about a donkey — full analysis (mobile version)',
       galleryItem2: '🚂 Train without direction — short case (desktop Telegram)',
@@ -631,6 +640,22 @@
     const lang = localStorage.getItem('siteLang') || 'uk';
     setLang(lang);
   });
+
+  document.addEventListener('DOMContentLoaded', () => {
+  const telegramLoginBtn = document.getElementById('telegram-login-btn');
+  if (telegramLoginBtn) {
+    telegramLoginBtn.addEventListener('click', () => {
+      // Симулируем клик по скрытому Telegram-виджету
+      const telegramWidget = document.querySelector('#telegram-widget iframe');
+      if (telegramWidget) {
+        telegramWidget.contentWindow.postMessage('trigger_login', '*');
+      } else {
+        // Альтернатива: перенаправление на ссылку авторизации
+        window.location.href = 'https://t.me/DreamHelperPsyBot?start=login';
+      }
+    });
+  }
+});
 </script>
 
 </body>
