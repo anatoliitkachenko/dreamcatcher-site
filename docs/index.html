@@ -53,13 +53,11 @@
     <p id="hero-text-4" data-i18n="heroText4">
       🌀 Все анонімно, без реєстрації.
     </p>
-    <!-- В секции Hero, заменяем часть с tg-login-section -->
+<!-- В секции Hero, обновляем tg-login-section -->
 <div id="tg-login-section" style="text-align:center; margin-top:2rem;">
-  <div id="tg-login">
-    <!-- Кастомная кнопка для авторизации через Telegram -->
-    <button id="telegram-login-btn" class="btn btn-primary" data-i18n="telegramLoginBtn">Увійти через Telegram</button>
-    <!-- Скрытый Telegram-виджет для обработки авторизации -->
-    <div id="telegram-widget" style="display:none;">
+  <div id="tg-login" class="telegram-login-wrapper">
+    <!-- Telegram-виджет -->
+    <div class="telegram-widget">
       <script async src="https://telegram.org/js/telegram-widget.js?7"
         data-telegram-login="DreamHelperPsyBot"
         data-size="large"
@@ -68,6 +66,8 @@
         data-onauth="onTelegramAuth(user)">
       </script>
     </div>
+    <!-- Кастомный текст поверх кнопки -->
+    <span class="telegram-login-text" data-i18n="telegramLoginBtn">Увійти через Telegram</span>
   </div>
   <div id="greeting" style="display:none; margin: 1rem 0; font-size:1.2em;"></div>
   <form id="pay-form" style="display:none; margin:2rem auto; max-width:320px;" method="POST" action="/create-checkout-session">
@@ -318,24 +318,24 @@
   });
 </script>
 <script>
-  function onTelegramAuth(user) {
-    const userIdField = document.getElementById('tg_user_id');
-    const usernameField = document.getElementById('tg_username');
-    const firstNameField = document.getElementById('tg_firstname');
-    const greeting = document.getElementById('greeting');
-    const payForm = document.getElementById('pay-form');
-    const tgLogin = document.getElementById('tg-login');
+function onTelegramAuth(user) {
+  const userIdField = document.getElementById('tg_user_id');
+  const usernameField = document.getElementById('tg_username');
+  const firstNameField = document.getElementById('tg_firstname');
+  const greeting = document.getElementById('greeting');
+  const payForm = document.getElementById('pay-form');
+  const tgLogin = document.getElementById('tg-login');
 
-    if (userIdField && usernameField && firstNameField && greeting && payForm && tgLogin) {
-      userIdField.value = user.id;
-      usernameField.value = user.username || '';
-      firstNameField.value = user.first_name || '';
-      greeting.innerHTML = `👋 Вітаємо, <b>${user.first_name || user.username || 'користувач'}</b>!<br>Далі оберіть тариф і оплатіть доступ:`;
-      greeting.style.display = 'block';
-      payForm.style.display = 'block';
-      tgLogin.style.display = 'none';
-    }
+  if (userIdField && usernameField && firstNameField && greeting && payForm && tgLogin) {
+    userIdField.value = user.id;
+    usernameField.value = user.username || '';
+    firstNameField.value = user.first_name || '';
+    greeting.innerHTML = `👋 Вітаємо, <b>${user.first_name || user.username || 'користувач'}</b>!<br>Далі оберіть тариф і оплатіть доступ:`;
+    greeting.style.display = 'block';
+    payForm.style.display = 'block';
+    tgLogin.style.display = 'none';
   }
+}
 </script>
 
 <script>

@@ -944,4 +944,34 @@ footer {
   .header-left span {
     font-size: 1.35rem;
   }
-  
+
+/* styles.css */
+.telegram-login-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.telegram-widget {
+  position: relative;
+  z-index: 1;
+}
+
+.telegram-login-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 2;
+  pointer-events: none; /* Делаем текст некликабельным, чтобы клики проходили на кнопку */
+  text-align: center;
+  width: 100%;
+}
+
+/* Стили для кнопки Telegram, чтобы подогнать под дизайн */
+.telegram-widget iframe {
+  border-radius: 8px;
+  background: #37AEE2; /* Цвет Telegram */
+}
