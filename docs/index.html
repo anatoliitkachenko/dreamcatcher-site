@@ -356,6 +356,27 @@
         document.getElementById('tg-login').style.display = "none";
       }
     });
-</script>    
+</script>
+
+<script>
+const apiBaseUrl = window.location.hostname === "localhost"
+    ? "http://localhost:8000"
+    : "https://anatoliitkachenko.github.io/dreamcatcher-site";
+
+document.getElementById('pay-form')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const user_id = document.getElementById('tg_user_id').value;
+    const plan_type = document.getElementById('plan_type').value;
+
+    const res = await fetch(`${apiBaseUrl}/create-checkout-session`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id, plan_type })
+    });
+    const data = await res.json();
+    window.location.href = data.url;
+});
+</script>
 </body>
 </html>
+
