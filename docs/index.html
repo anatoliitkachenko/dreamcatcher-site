@@ -363,19 +363,22 @@ const apiBaseUrl = window.location.hostname === "localhost"
     ? "http://localhost:8000"
     : "http://157.90.119.107";
 
-document.getElementById('pay-form')?.addEventListener('submit', async function(e) {
+    document.getElementById('pay-form')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     const user_id = document.getElementById('tg_user_id').value;
     const plan_type = document.getElementById('plan_type').value;
+    const username = document.getElementById('tg_username').value;
+    const first_name = document.getElementById('tg_firstname').value;
 
     const res = await fetch(`${apiBaseUrl}/create-checkout-session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id, plan_type })
+        body: JSON.stringify({ user_id, plan_type, username, first_name })
     });
     const data = await res.json();
     window.location.href = data.url;
 });
+
 </script>
 </body>
 </html>
