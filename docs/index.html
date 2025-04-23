@@ -24,11 +24,11 @@
           <a href="#contacts">Контакти</a>
         </nav>
       </div>
-      <div class="header-right">
-        <button class="lang active">UK</button>
-        <button class="lang">RU</button>
-        <button class="lang">EN</button>
-      </div>
+      <div class="lang-switcher">
+        <button class="lang" id="lang-uk">UK</button>
+        <button class="lang" id="lang-ru">RU</button>
+        <button class="lang" id="lang-en">EN</button>
+      </div>      
     </div>
   </header>  
 
@@ -36,12 +36,22 @@
 <section class="hero-full" id="hero">
     <div class="hero-bg-shadow"></div> 
         <div class="hero-content container">
-        <h1>Dreamcatcher</h1>
-        <p>🌙 Я — Ловець снів<br>
-        Створений практикуючим психологом Анною Булат <a href="https://instagram.com/bulat.psychology" target="_blank" rel="noopener">(@bulat.psychology)</a>, щоб вести тебе в світ несвідомого через юнгіанський погляд.</p>
-        <p>Сни — це мова твоєї душі. В них — страхи, бажання, надії і підказки.</p>
-        <p>Всього 5 кроків — і ти побачиш, що стоїть за символами і емоціями сну.</p>
-        <p>🌀 Все анонімно, без реєстрації.</p>
+          <h1 id="title-main">Dreamcatcher</h1>
+          <p id="hero-text-1">
+            🌙 Я — Ловець снів<br>
+            Створений практикуючим психологом Анною Булат 
+            <a href="https://instagram.com/bulat.psychology" target="_blank" rel="noopener">(@bulat.psychology)</a>, 
+            щоб вести тебе в світ несвідомого через юнгіанський погляд.
+          </p>
+          <p id="hero-text-2">
+            Сни — це мова твоєї душі. В них — страхи, бажання, надії і підказки.
+          </p>
+          <p id="hero-text-3">
+            Всього 5 кроків — і ти побачиш, що стоїть за символами і емоціями сну.
+          </p>
+          <p id="hero-text-4">
+            🌀 Все анонімно, без реєстрації.
+          </p>          
         <!-- Telegram Login Widget и Форма Оплаты -->
         <div id="tg-login-section" style="text-align:center; margin-top:2rem;">
             <!-- 1. Telegram Login Widget -->
@@ -377,8 +387,61 @@ const apiBaseUrl = window.location.hostname === "localhost"
     });
     const data = await res.json();
     window.location.href = data.url;
-});
+  });
+</script>
 
+<script>
+  const translations = {
+    uk: {
+      heroText1: `🌙 Я — Ловець снів<br>
+        Створений практикуючим психологом Анною Булат 
+        <a href="https://instagram.com/bulat.psychology" target="_blank" rel="noopener">(@bulat.psychology)</a>, 
+        щоб вести тебе в світ несвідомого через юнгіанський погляд.`,
+      heroText2: "Сни — це мова твоєї душі. В них — страхи, бажання, надії і підказки.",
+      heroText3: "Всього 5 кроків — і ти побачиш, що стоїть за символами і емоціями сну.",
+      heroText4: "🌀 Все анонімно, без реєстрації.",
+      // ... остальные поля
+    },
+    ru: {
+      heroText1: `🌙 Я — Ловец снов<br>
+        Создан практикующим психологом Анной Булат 
+        <a href="https://instagram.com/bulat.psychology" target="_blank" rel="noopener">(@bulat.psychology)</a>, 
+        чтобы вести тебя в мир бессознательного через юнгианский взгляд.`,
+      heroText2: "Сны — это язык твоей души. В них — страхи, желания, надежды и подсказки.",
+      heroText3: "Всего 5 шагов — и ты увидишь, что стоит за символами и эмоциями сна.",
+      heroText4: "🌀 Всё анонимно, без регистрации.",
+      // ... остальные поля
+    },
+    en: {
+      heroText1: `🌙 I am the Dreamcatcher<br>
+        Created by practicing psychologist Anna Bulat 
+        <a href="https://instagram.com/bulat.psychology" target="_blank" rel="noopener">(@bulat.psychology)</a>, 
+        to guide you into the world of the unconscious through Jungian perspective.`,
+      heroText2: "Dreams are the language of your soul. They hold fears, desires, hopes, and clues.",
+      heroText3: "Just 5 steps — and you will see what’s behind the symbols and emotions of your dream.",
+      heroText4: "🌀 All anonymous, no registration.",
+      // ... остальные поля
+    }
+  };
+  function setLang(lang) {
+  document.getElementById('hero-text-1').innerHTML = translations[lang].heroText1;
+  document.getElementById('hero-text-2').innerHTML = translations[lang].heroText2;
+  document.getElementById('hero-text-3').innerHTML = translations[lang].heroText3;
+  document.getElementById('hero-text-4').innerHTML = translations[lang].heroText4;
+  // Добавляй другие строки по такому же принципу
+  localStorage.setItem('siteLang', lang);
+  }
+
+// События на кнопки:
+document.getElementById('lang-uk').onclick = () => setLang('uk');
+document.getElementById('lang-ru').onclick = () => setLang('ru');
+document.getElementById('lang-en').onclick = () => setLang('en');
+
+// При запуске страницы — автоязык:
+window.addEventListener('DOMContentLoaded', () => {
+  let lang = localStorage.getItem('siteLang') || 'uk';
+  setLang(lang);
+});
 </script>
 </body>
 </html>
