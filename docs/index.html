@@ -74,11 +74,11 @@
                 <input type="hidden" name="first_name" id="tg_firstname">
                 <label for="plan_type">Оберіть тариф:</label>
                 <select name="plan_type" id="plan_type" required style="width:100%; margin: 1rem 0;">
-                    <option value="subscription">Підписка на 30 днів — 300 грн</option>
-                    <option value="single">Одноразовий аналіз — 40 грн</option>
-                    <option value="free">Безкоштовний тариф</option>
+                  <option value="subscription" id="plan-subscription">Підписка на 30 днів — 300 грн</option>
+                  <option value="single" id="plan-single">Одноразовий аналіз — 40 грн</option>
+                  <option value="free" id="plan-free">Безкоштовний тариф</option>
                 </select>
-                <button type="submit" class="btn btn-primary" style="width:100%;">Оплатити доступ</button>
+                <button id="pay-btn" type="submit" class="btn btn-primary" style="width:100%;">Оплатити доступ</button>
                 <p style="margin-top:0.8rem; font-size:0.93em;">
                 Перед оплатою ви погоджуєтесь з <a href="offer.html" target="_blank">офертою</a> та <a href="privacy.html" target="_blank">політикою конфіденційності</a>.
                 </p>
@@ -405,8 +405,10 @@ const apiBaseUrl = window.location.hostname === "localhost"
       menuPricing: "Ціни",
       menuFaq: "FAQ",
       menuContacts: "Контакти",
-      
-      
+      planSubscription: "Підписка на 30 днів — 300 грн",
+      planSingle: "Одноразовий аналіз — 40 грн",
+      planFree: "Безкоштовний тариф",
+      payBtn: "Оплатити доступ"
       // ... остальные поля
     },
     ru: {
@@ -422,8 +424,10 @@ const apiBaseUrl = window.location.hostname === "localhost"
       menuPricing: "Цены",
       menuFaq: "FAQ",
       menuContacts: "Контакты",
-      
-      
+      planSubscription: "Подписка на 30 дней — 300 грн",
+      planSingle: "Разовый анализ — 40 грн",
+      planFree: "Бесплатный тариф",
+      payBtn: "Оплатить доступ",
       // ... остальные поля
     },
     en: {
@@ -439,8 +443,10 @@ const apiBaseUrl = window.location.hostname === "localhost"
       menuPricing: "Pricing",
       menuFaq: "FAQ",
       menuContacts: "Contacts",
-      
-      
+      planSubscription: "30-day subscription — 300 UAH",
+      planSingle: "Single analysis — 40 UAH",
+      planFree: "Free plan",
+      payBtn: "Pay for access",
       
       // ... остальные поля
     }
@@ -455,6 +461,11 @@ const apiBaseUrl = window.location.hostname === "localhost"
   document.getElementById('menu-pricing').textContent = translations[lang].menuPricing;
   document.getElementById('menu-faq').textContent = translations[lang].menuFaq;
   document.getElementById('menu-contacts').textContent = translations[lang].menuContacts;
+  document.getElementById('plan-subscription').textContent = translations[lang].planSubscription;
+  document.getElementById('plan-single').textContent = translations[lang].planSingle;
+  document.getElementById('plan-free').textContent = translations[lang].planFree;
+  document.getElementById('pay-btn').textContent = translations[lang].payBtn;
+
   // Добавляй другие строки по такому же принципу
   localStorage.setItem('siteLang', lang);
   }
