@@ -1034,8 +1034,11 @@ footer {
   gap: 2rem;
 }
 
-/* Меню: мобилка */
 @media (max-width: 768px) {
+  .nav-toggle {
+    display: flex; /* Убедимся, что бургер-меню видно */
+  }
+
   .main-nav {
     position: absolute;
     top: 100%;
@@ -1044,33 +1047,73 @@ footer {
     width: 96vw;
     max-width: 390px;
     min-width: 240px;
-    background: #ffffff; /* Более яркий белый фон для контраста */
+    background: #ffffff;
     flex-direction: column;
     align-items: center;
     gap: 1.2rem;
     padding: 2.2rem 0 1.6rem 0;
-    display: none;
+    display: none; /* По умолчанию скрыто */
+    opacity: 0;
     z-index: 1200;
     border-radius: 0 0 24px 24px;
     box-shadow: 0 8px 32px rgba(60,60,100,0.13);
     text-align: center;
+    transition: opacity 0.23s ease, display 0.23s ease;
   }
+
   .main-nav.open {
-    display: flex;
+    display: flex; /* Показываем при открытии */
+    opacity: 1;
     animation: fadeDown 0.23s;
   }
-  /* Увеличиваем отступы для языкового переключателя */
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+.site-header {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  background-color: #CAC6AC;
+  box-shadow: var(--shadow-soft);
+  z-index: 1300; /* Увеличиваем z-index */
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 700px;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    padding: 4rem 1rem; /* Увеличиваем padding сверху */
+  }
+}
+
+@media (max-width: 768px) {
   .lang-switcher {
     display: flex;
     gap: 0.7rem;
-    margin: 1.5rem auto 0; /* Больше пространства сверху */
-    padding-bottom: 1rem; /* Отступ снизу */
+    margin: 1.5rem auto 0;
+    padding-bottom: 1rem;
     justify-content: center;
     width: 100%;
   }
+
   .main-nav .lang {
     font-size: 1.05rem;
-    padding: 0.5rem 1.2rem; /* Увеличиваем padding для кнопок */
+    padding: 0.5rem 1.2rem;
     border-radius: 7px;
     border: 1px solid #eaeaea;
     background: #faf8f6;
@@ -1079,6 +1122,7 @@ footer {
     font-weight: 600;
     transition: background 0.18s, color 0.18s;
   }
+
   .main-nav .lang.active,
   .main-nav .lang:focus,
   .main-nav .lang:hover {
@@ -1086,30 +1130,14 @@ footer {
     color: #fff;
     border-color: var(--color-accent);
   }
-  /* Увеличиваем отступы для пунктов меню */
-  .main-nav a {
-    font-size: 1.18rem;
-    font-weight: 600;
-    padding: 0.8rem 0.6rem; /* Больше padding */
-    width: 100%;
-    text-align: center;
-    border-radius: 8px;
-    transition: background 0.16s;
-    letter-spacing: 0.01em;
-  }
-  .main-nav a:hover {
-    background: #ecebe7;
-  }
 }
-@media (max-width: 768px) {
-  .main-nav {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.23s ease;
-  }
-  .main-nav.open {
-    display: flex;
-    opacity: 1;
-    animation: fadeDown 0.23s;
+
+@media (max-width: 500px) {
+  #tg-login-section .btn-outline-telegram {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 1.2rem;
+    padding: 0.7rem 1rem;
+    box-sizing: border-box;
   }
 }

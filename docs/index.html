@@ -699,15 +699,17 @@ function setLang(lang) {
 const navToggle = document.getElementById('nav-toggle');
 const mainNav = document.getElementById('main-nav');
 if (navToggle && mainNav) {
+  navToggle.setAttribute('aria-expanded', 'false'); // Начальное состояние
   navToggle.addEventListener('click', () => {
-    mainNav.classList.toggle('open');
+    const isOpen = mainNav.classList.toggle('open');
     navToggle.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   });
-  // При клике на любой пункт меню или язык — закрывать меню
   mainNav.querySelectorAll('a, .lang').forEach(el => {
     el.addEventListener('click', () => {
       mainNav.classList.remove('open');
       navToggle.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
     });
   });
 }
