@@ -341,21 +341,27 @@ function onTelegramAuth(user) {
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
-    const uid = params.get('uid');
-    const greeting = document.getElementById('greeting');
-    const payForm = document.getElementById('pay-form');
-    const tgLogin = document.getElementById('tg-login');
-    const userIdField = document.getElementById('tg_user_id');
+  const params = new URLSearchParams(window.location.search);
+  const userId = params.get('uid');
+  const username = params.get('username');
+  const firstName = params.get('first_name');
+  const greeting = document.getElementById('greeting');
+  const payForm = document.getElementById('pay-form');
+  const tgLogin = document.getElementById('tg-login');
+  const userIdField = document.getElementById('tg_user_id');
+  const usernameField = document.getElementById('tg_username');
+  const firstNameField = document.getElementById('tg_firstname');
 
-    if (uid && userIdField && greeting && payForm && tgLogin) {
-      userIdField.value = uid;
-      payForm.style.display = 'block';
-      greeting.innerHTML = `👋 Вітаємо, користувач #${uid}!<br>Оберіть тариф та оплатіть доступ:`;
-      greeting.style.display = 'block';
-      tgLogin.style.display = 'none';
-    }
-  });
+  if (userId && userIdField && usernameField && firstNameField && greeting && payForm && tgLogin) {
+    userIdField.value = userId;
+    usernameField.value = username || '';
+    firstNameField.value = firstName || '';
+    greeting.innerHTML = `👋 Welcome, <b>${firstName || username || 'user'}</b>!<br>Please select a plan and pay for access:`;
+    greeting.style.display = 'block';
+    payForm.style.display = 'block';
+    tgLogin.style.display = 'none';
+  }
+});
 </script>
 
 <script>
