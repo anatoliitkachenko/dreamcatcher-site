@@ -962,3 +962,23 @@ footer {
     margin-top: 1.2rem;
   }
 }
+
+.login-btns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem; /* расстояние между кнопками */
+}
+
+.login-btns .btn,
+.login-btns .btn-outline-telegram {
+  width: 230px;
+  max-width: 100%;
+}
+@media (max-width: 500px) {
+  .login-btns .btn,
+  .login-btns .btn-outline-telegram {
+    width: 100%;
+  }
+}
+
