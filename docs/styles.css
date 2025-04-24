@@ -949,21 +949,3 @@ footer {
 .telegram-login-wrapper {
   display: inline-block;
 }
-
-/* Стили для кастомной кнопки */
-.telegram-login-btn {
-  display: inline-block;
-  padding: 10px 20px;
-  background: #37AEE2; /* Цвет Telegram */
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 8px;
-  text-decoration: none;
-  text-align: center;
-  transition: background 0.3s;
-}
-
-.telegram-login-btn:hover {
-  background: #2A8BBF; /* Темнее при наведении */
-}
