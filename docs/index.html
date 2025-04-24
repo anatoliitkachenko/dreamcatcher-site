@@ -248,10 +248,11 @@
       ІПН 3084500361
     </div>
     <div class="footer-col">
-      <a href="privacy.html" data-i18n="privacyLink">Політика конфіденційності</a><br>
-      <a href="offer.html" data-i18n="offerLink">Оферта</a><br>
-      <a href="returns.html" data-i18n="returnsLink">Повернення</a>
+      <a href="privacy.html" id="link-privacy" data-i18n="privacyLink">Політика конфіденційності</a><br>
+      <a href="offer.html" id="link-offer" data-i18n="offerLink">Оферта</a><br>
+      <a href="returns.html" id="link-returns" data-i18n="returnsLink">Повернення</a>
     </div>
+    
     <div class="footer-col">
       Email: <a href="mailto:support@dreamcatcher.guru">support@dreamcatcher.guru</a><br>
     </div>
@@ -618,21 +619,55 @@ function onTelegramAuth(user) {
     }
   };
 
-  function setLang(lang) {
-    document.querySelectorAll('[data-i18n]').forEach(element => {
-      const key = element.getAttribute('data-i18n');
-      if (translations[lang][key]) {
-        // Use textContent for buttons and options, innerHTML for elements with HTML
-        if (element.tagName === 'BUTTON' || element.tagName === 'OPTION') {
-          element.textContent = translations[lang][key];
-        } else {
-          element.innerHTML = translations[lang][key];
-        }
-      }
-    });
-    localStorage.setItem('siteLang', lang);
-    document.documentElement.lang = lang;
+// 1. Словарь всех ссылок на документы по языкам
+const docLinks = {
+  uk: {
+    offer: "offer.html",
+    privacy: "privacy.html",
+    returns: "returns.html"
+  },
+  ru: {
+    offer: "offer-ru.html",
+    privacy: "privacy-ru.html",
+    returns: "returns-ru.html"
+  },
+  en: {
+    offer: "offer-en.html",
+    privacy: "privacy-en.html",
+    returns: "returns-en.html"
   }
+};
+
+// 2. Функция для обновления href документов
+function setDocLinks(lang) {
+  const privacy = document.getElementById('link-privacy');
+  const offer = document.getElementById('link-offer');
+  const returns = document.getElementById('link-returns');
+  if (privacy && offer && returns) {
+    privacy.href = docLinks[lang].privacy;
+    offer.href = docLinks[lang].offer;
+    returns.href = docLinks[lang].returns;
+  }
+}
+
+function setLang(lang) {
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    const key = element.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      if (element.tagName === 'BUTTON' || element.tagName === 'OPTION') {
+        element.textContent = translations[lang][key];
+      } else {
+        element.innerHTML = translations[lang][key];
+      }
+    }
+  });
+  // Вот эта строка добавляет смену ссылок при смене языка!
+  setDocLinks(lang);
+
+  localStorage.setItem('siteLang', lang);
+  document.documentElement.lang = lang;
+}
+
 
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('lang-uk')?.addEventListener('click', () => setLang('uk'));
