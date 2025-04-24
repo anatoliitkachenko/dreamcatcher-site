@@ -18,14 +18,16 @@
       </a>
     </div>
     <div class="header-center">
-      <nav class="main-nav">
+      <button class="nav-toggle" id="nav-toggle" aria-label="Open menu">
+        <span class="hamburger"></span>
+      </button>
+      <nav class="main-nav" id="main-nav">
         <a id="menu-forwhom" href="#about" data-i18n="menuForwhom">Для кого</a>
         <a id="menu-pricing" href="#pricing" data-i18n="menuPricing">Ціни</a>
         <a id="menu-faq" href="#faq" data-i18n="menuFaq">FAQ</a>
         <a id="menu-contacts" href="#contacts" data-i18n="menuContacts">Контакти</a>
       </nav>
-    </div>
-    <div class="lang-switcher">
+    </div>    
       <button class="lang" id="lang-uk">UK</button>
       <button class="lang" id="lang-ru">RU</button>
       <button class="lang" id="lang-en">EN</button>
@@ -690,6 +692,23 @@ function setLang(lang) {
         // Альтернатива: перенаправление на ссылку авторизации
         window.location.href = 'https://t.me/DreamHelperPsyBot?start=login';
       }
+    });
+  }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  const navToggle = document.getElementById('nav-toggle');
+  const mainNav = document.getElementById('main-nav');
+  if (navToggle && mainNav) {
+    navToggle.addEventListener('click', () => {
+      mainNav.classList.toggle('open');
+      navToggle.classList.toggle('open');
+    });
+    // По клику на ссылку — закрывать меню
+    mainNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mainNav.classList.remove('open');
+        navToggle.classList.remove('open');
+      });
     });
   }
 });
