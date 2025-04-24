@@ -153,8 +153,7 @@ nav.container {
   .hero-bg-shadow {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(202,198,172,0.8) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.4) 100%);
-    z-index: 1;
+    background: linear-gradient(180deg, rgba(202,198,172,0.8) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.6) 100%);
   }
   .hero-content {
     position: relative;
@@ -960,6 +959,7 @@ footer {
   #tg-login-section .btn-outline-telegram {
     width: 100%;
     margin-top: 1.2rem;
+    padding: 0.7rem 1rem; /* Уменьшаем padding по горизонтали */
   }
 }
 
@@ -1044,7 +1044,7 @@ footer {
     width: 96vw;
     max-width: 390px;
     min-width: 240px;
-    background: var(--color-light);
+    background: #ffffff; /* Более яркий белый фон для контраста */
     flex-direction: column;
     align-items: center;
     gap: 1.2rem;
@@ -1059,34 +1059,18 @@ footer {
     display: flex;
     animation: fadeDown 0.23s;
   }
-  @keyframes fadeDown {
-    0% { opacity: 0; transform: translateX(-50%) translateY(-10px);}
-    100% { opacity: 1; transform: translateX(-50%) translateY(0);}
-  }
-  .main-nav a {
-    font-size: 1.18rem;
-    font-weight: 600;
-    padding: 0.6rem 0.6rem;
-    width: 100%;
-    text-align: center;
-    border-radius: 8px;
-    transition: background 0.16s;
-    letter-spacing: 0.01em;
-  }
-  .main-nav a:hover {
-    background: #ecebe7;
-  }
+  /* Увеличиваем отступы для языкового переключателя */
   .lang-switcher {
     display: flex;
     gap: 0.7rem;
-    margin: 0 auto;
-    margin-top: 1.3rem;
+    margin: 1.5rem auto 0; /* Больше пространства сверху */
+    padding-bottom: 1rem; /* Отступ снизу */
     justify-content: center;
     width: 100%;
   }
   .main-nav .lang {
     font-size: 1.05rem;
-    padding: 0.37rem 1.08rem;
+    padding: 0.5rem 1.2rem; /* Увеличиваем padding для кнопок */
     border-radius: 7px;
     border: 1px solid #eaeaea;
     background: #faf8f6;
@@ -1102,5 +1086,30 @@ footer {
     color: #fff;
     border-color: var(--color-accent);
   }
+  /* Увеличиваем отступы для пунктов меню */
+  .main-nav a {
+    font-size: 1.18rem;
+    font-weight: 600;
+    padding: 0.8rem 0.6rem; /* Больше padding */
+    width: 100%;
+    text-align: center;
+    border-radius: 8px;
+    transition: background 0.16s;
+    letter-spacing: 0.01em;
+  }
+  .main-nav a:hover {
+    background: #ecebe7;
+  }
 }
-
+@media (max-width: 768px) {
+  .main-nav {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.23s ease;
+  }
+  .main-nav.open {
+    display: flex;
+    opacity: 1;
+    animation: fadeDown 0.23s;
+  }
+}
