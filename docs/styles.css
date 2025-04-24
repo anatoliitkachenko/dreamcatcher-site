@@ -949,3 +949,16 @@ footer {
 .telegram-login-wrapper {
   display: inline-block;
 }
+
+#tg-login-section .btn-outline-telegram {
+  margin-top: 1.6rem;
+  margin-bottom: 0.2rem;
+  display: inline-block;
+  width: auto;
+}
+@media (max-width: 500px) {
+  #tg-login-section .btn-outline-telegram {
+    width: 100%;
+    margin-top: 1.2rem;
+  }
+}
