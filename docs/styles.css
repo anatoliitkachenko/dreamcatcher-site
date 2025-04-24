@@ -1057,5 +1057,43 @@ footer {
     display: flex;
   }
 }
-
+.lang-switcher {
+  display: flex;
+  gap: 0.4rem;
+  margin-left: 1.2rem;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .lang-switcher {
+    gap: 0.6rem;
+    margin-left: 0;
+    margin-top: 1rem;
+    justify-content: flex-start;
+  }
+  .main-nav {
+    min-width: 170px;
+    width: 95vw;
+    max-width: 350px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-sizing: border-box;
+  }
+  .main-nav .lang {
+    width: auto;
+    font-size: 1rem;
+    padding: 0.35rem 0.7rem;
+    margin: 0 0.1rem;
+    border-radius: 5px;
+    border: 1px solid #eaeaea;
+    background: #faf8f6;
+  }
+}
+@media (max-width: 768px) {
+  .main-nav {
+    transition: all 0.28s cubic-bezier(.16,1.02,.93,.93);
+    box-shadow: 0 6px 38px 0 rgba(0,0,0,0.10);
+    border-radius: 0 0 18px 18px;
+    min-width: 200px;
+  }
+}
 
