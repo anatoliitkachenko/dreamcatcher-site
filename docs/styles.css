@@ -1043,7 +1043,7 @@ footer {
   }
 
   .header-flex {
-    padding: 0; /* Убираем боковые отступы */
+    padding: 0 1rem; /* Добавляем небольшой отступ слева и справа */
     width: 100%; /* Полная ширина */
     max-width: none; /* Убираем ограничение max-width */
     margin: 0; /* Убираем центрирование */
@@ -1058,6 +1058,7 @@ footer {
 
   .nav-toggle {
     display: flex; /* Убедимся, что бургер-меню видно */
+    margin-right: 12px; /* Увеличиваем отступ справа */
   }
 
   .main-nav {
@@ -1065,13 +1066,13 @@ footer {
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    width: 75vw; /* Уменьшенная ширина */
+    width: 65vw; /* Уменьшенная ширина */
     margin: 0;
-    background: rgba(255, 255, 255, 0.85); /* Прозрачный фон */
+    background: rgba(255, 255, 255, 0.8); /* Более прозрачный фон */
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
-    padding: 1.8rem 0.8rem; /* Уменьшенный padding */
+    padding: 1.5rem 0.6rem; /* Уменьшенный padding */
     display: none;
     opacity: 0;
     z-index: 1200;
@@ -1108,21 +1109,21 @@ footer {
 
   .lang-switcher {
     display: flex;
-    gap: 1rem;
-    margin: 2rem auto 0;
-    padding-bottom: 1.5rem;
+    gap: 0.7rem;
+    margin: 1.5rem auto 0;
+    padding-bottom: 1rem;
     justify-content: center;
     width: 100%;
     overflow-x: auto;
   }
 
   .main-nav .lang {
-    font-size: 1.1rem;
-    padding: 0.6rem 1.5rem;
-    border-radius: 8px;
+    font-size: 1.05rem;
+    padding: 0.5rem 1.2rem;
+    border-radius: 7px;
     border: 1px solid #eaeaea;
     background: #faf8f6;
-    margin: 0 0.1rem;
+    margin: 0 0.09rem;
     color: var(--color-primary);
     font-weight: 600;
     transition: background 0.18s, color 0.18s;
@@ -1138,7 +1139,7 @@ footer {
   }
 
   .hero-content {
-    padding: 6rem 1rem; /* Убедимся, что отступ сверху достаточный */
+    padding: 4rem 1rem; /* Увеличиваем padding сверху */
   }
 }
 
