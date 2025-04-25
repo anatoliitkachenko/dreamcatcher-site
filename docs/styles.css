@@ -1043,7 +1043,7 @@ footer {
   }
 
   .header-flex {
-    padding: 0 1rem; /* Добавляем небольшой отступ слева и справа */
+    padding: 0 1.2rem; /* Увеличиваем отступы слева и справа для баланса */
     width: 100%; /* Полная ширина */
     max-width: none; /* Убираем ограничение max-width */
     margin: 0; /* Убираем центрирование */
@@ -1058,8 +1058,8 @@ footer {
 
   .nav-toggle {
     display: flex; /* Убедимся, что бургер-меню видно */
-    margin-right: 12px; /* Увеличиваем отступ справа */
-    margin-left: 20px;
+    margin-right: 12px;
+    margin-left: 12px; /* Уменьшаем margin-left */
   }
 
   .main-nav {
@@ -1067,17 +1067,17 @@ footer {
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    width: 55vw; /* Уменьшенная ширина */
+    width: 50vw; /* Ещё меньше ширина */
     margin: 0;
-    background: rgba(255, 255, 255, 0.75); /* Более прозрачный фон */
+    background: rgba(255, 255, 255, 0.7); /* Чуть больше прозрачности */
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
-    padding: 1.2rem 0.5rem; /* Уменьшенный padding */
+    gap: 1.2rem; /* Уменьшаем gap */
+    padding: 1rem 0.4rem; /* Уменьшаем padding */
     display: none;
     opacity: 0;
     z-index: 1200;
-    border-radius: 0 0 20px 20px;
+    border-radius: 0 0 16px 16px; /* Уменьшаем радиус углов */
     box-shadow: 0 8px 32px rgba(60, 60, 100, 0.13);
     text-align: center;
     transition: opacity 0.23s ease, display 0.23s ease;
@@ -1090,12 +1090,12 @@ footer {
   }
 
   .main-nav a {
-    font-size: 1.25rem;
+    font-size: 1.1rem; /* Уменьшаем шрифт */
     font-weight: 600;
-    padding: 1rem 0.8rem;
+    padding: 0.8rem 0.6rem; /* Уменьшаем padding */
     width: 100%;
     text-align: center;
-    border-radius: 8px;
+    border-radius: 6px; /* Уменьшаем радиус углов */
     transition: background 0.16s;
     letter-spacing: 0.01em;
     color: var(--color-primary);
@@ -1110,21 +1110,21 @@ footer {
 
   .lang-switcher {
     display: flex;
-    gap: 0.7rem;
-    margin: 1.5rem auto 0;
-    padding-bottom: 1rem;
+    gap: 0.5rem; /* Уменьшаем gap */
+    margin: 1rem auto 0; /* Уменьшаем margin */
+    padding-bottom: 0.8rem; /* Уменьшаем padding-bottom */
     justify-content: center;
     width: 100%;
     overflow-x: auto;
   }
 
   .main-nav .lang {
-    font-size: 1.05rem;
-    padding: 0.5rem 1.2rem;
-    border-radius: 7px;
+    font-size: 0.95rem; /* Уменьшаем шрифт */
+    padding: 0.4rem 1rem; /* Уменьшаем padding */
+    border-radius: 6px; /* Уменьшаем радиус углов */
     border: 1px solid #eaeaea;
     background: #faf8f6;
-    margin: 0 0.09rem;
+    margin: 0 0.05rem;
     color: var(--color-primary);
     font-weight: 600;
     transition: background 0.18s, color 0.18s;
