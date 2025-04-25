@@ -1113,10 +1113,11 @@ footer {
 
   .lang-switcher {
     display: flex;
-    gap: 0.5rem;
+    flex-direction: column; /* Располагаем кнопки по вертикали */
+    gap: 0.5rem; /* Оставляем небольшой отступ между кнопками */
     margin: 1rem auto 0;
     padding-bottom: 0.8rem;
-    justify-content: center;
+    align-items: center; /* Центрируем кнопки по горизонтали */
     width: 100%;
     overflow-x: auto;
   }
@@ -1220,4 +1221,24 @@ footer {
     padding: 0.7rem 1rem;
     box-sizing: border-box;
   }
+}
+
+/* Убираем горизонтальный скролл */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* Запрещаем горизонтальный скролл */
+}
+
+/* Убедимся, что .main-nav не выходит за пределы */
+.main-nav {
+  max-width: 100%; /* Ограничиваем ширину */
+  box-sizing: border-box; /* Учитываем padding в ширине */
+}
+
+/* Убедимся, что .header-flex не создаёт лишнюю ширину */
+.header-flex {
+  box-sizing: border-box;
+  max-width: 100%;
 }
