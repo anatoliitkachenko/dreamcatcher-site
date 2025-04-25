@@ -1034,124 +1034,149 @@ footer {
   gap: 2rem;
 }
 
-/* Обновлённые стили для мобильного меню */
-@media (max-width: 768px) {
-  .container {
-    padding-top: 0; /* Убираем padding-top */
-    width: 100%; /* Полная ширина */
-    max-width: none; /* Убираем ограничение max-width */
-  }
+/* Mobile Menu Styles */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 8px;
+  z-index: 2000;
+}
 
-  .header-flex {
-    padding: 0 1.2rem; /* Увеличиваем отступы слева и справа для баланса */
-    width: 100%; /* Полная ширина */
-    max-width: none; /* Убираем ограничение max-width */
-    margin: 0; /* Убираем центрирование */
-  }
+.nav-toggle .hamburger,
+.nav-toggle .hamburger::before,
+.nav-toggle .hamburger::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: #1a1a1a;
+  border-radius: 2px;
+  transition: 0.3s ease;
+}
 
-  .header-center {
-    position: relative; /* Делаем .header-center позиционированным родителем */
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
+.nav-toggle .hamburger::before {
+  transform: translateY(-8px);
+}
 
-  .nav-toggle {
-    display: flex; /* Убедимся, что бургер-меню видно */
-    margin-right: 12px;
-    margin-left: 12px; /* Уменьшаем margin-left */
-  }
+.nav-toggle .hamburger::after {
+  transform: translateY(5px);
+}
 
-  .main-nav {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50vw; /* Ещё меньше ширина */
-    margin: 0;
-    background: rgba(255, 255, 255, 0.7); /* Чуть больше прозрачности */
-    flex-direction: column;
-    align-items: center;
-    gap: 1.2rem; /* Уменьшаем gap */
-    padding: 1rem 0.4rem; /* Уменьшаем padding */
-    display: none;
-    opacity: 0;
-    z-index: 1200;
-    border-radius: 0 0 16px 16px; /* Уменьшаем радиус углов */
-    box-shadow: 0 8px 32px rgba(60, 60, 100, 0.13);
-    text-align: center;
-    transition: opacity 0.23s ease, display 0.23s ease;
-  }
+.nav-toggle .hamburger {
+  position: relative;
+}
 
-  .main-nav.open {
-    display: flex;
-    opacity: 1;
-    animation: fadeDown 0.23s;
-  }
+.nav-toggle.open .hamburger {
+  background: transparent;
+}
 
-  .main-nav a {
-    font-size: 1.1rem; /* Уменьшаем шрифт */
-    font-weight: 600;
-    padding: 0.8rem 0.6rem; /* Уменьшаем padding */
-    width: 100%;
-    text-align: center;
-    border-radius: 6px; /* Уменьшаем радиус углов */
-    transition: background 0.16s;
-    letter-spacing: 0.01em;
-    color: var(--color-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.nav-toggle.open .hamburger::before {
+  transform: rotate(45deg) translate(6px, 6px);
+}
 
-  .main-nav a:hover {
-    background: #ecebe7;
-  }
+.nav-toggle.open .hamburger::after {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
 
-  .lang-switcher {
-    display: flex;
-    gap: 0.5rem; /* Уменьшаем gap */
-    margin: 1rem auto 0; /* Уменьшаем margin */
-    padding-bottom: 0.8rem; /* Уменьшаем padding-bottom */
-    justify-content: center;
-    width: 100%;
-    overflow-x: auto;
-  }
+/* Mobile menu container */
+.mobile-menu {
+  position: fixed;
+  top: 72px; /* Match your header height */
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 32px rgba(60, 60, 100, 0.13);
+  border-radius: 0 0 16px 16px;
+  padding: 1.5rem;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 1200;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
 
-  .main-nav .lang {
-    font-size: 0.95rem; /* Уменьшаем шрифт */
-    padding: 0.4rem 1rem; /* Уменьшаем padding */
-    border-radius: 6px; /* Уменьшаем радиус углов */
-    border: 1px solid #eaeaea;
-    background: #faf8f6;
-    margin: 0 0.05rem;
-    color: var(--color-primary);
-    font-weight: 600;
-    transition: background 0.18s, color 0.18s;
-    white-space: nowrap;
-  }
+.mobile-menu.open {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeDown 0.3s;
+}
 
-  .main-nav .lang.active,
-  .main-nav .lang:focus,
-  .main-nav .lang:hover {
-    background: var(--color-accent);
-    color: #fff;
-    border-color: var(--color-accent);
-  }
+.mobile-menu a {
+  font-size: 1.2rem;
+  color: #1a1a1a;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.8rem 1.5rem;
+  width: 100%;
+  text-align: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
 
-  .hero-content {
-    padding: 4rem 1rem; /* Увеличиваем padding сверху */
-  }
+.mobile-menu a:hover {
+  background: #ecebe7;
+}
+
+.lang-switcher {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.lang-btn {
+  font-size: 1.05rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 7px;
+  border: 1px solid #eaeaea;
+  background: #faf8f6;
+  color: #1a1a1a;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.lang-btn.active,
+.lang-btn:hover {
+  background: #4a90e2;
+  color: #fff;
+  border-color: #4a90e2;
 }
 
 @keyframes fadeDown {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-15px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (min-width: 769px) {
+  .nav-toggle {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .desktop-menu {
+    display: none;
+  }
+  .nav-toggle {
+    display: flex;
   }
 }
 
