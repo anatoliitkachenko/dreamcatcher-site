@@ -1059,6 +1059,7 @@ footer {
   .nav-toggle {
     display: flex; /* Убедимся, что бургер-меню видно */
     margin-right: 12px; /* Увеличиваем отступ справа */
+    margin-left: 8px;
   }
 
   .main-nav {
@@ -1066,13 +1067,13 @@ footer {
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    width: 65vw; /* Уменьшенная ширина */
+    width: 55vw; /* Уменьшенная ширина */
     margin: 0;
-    background: rgba(255, 255, 255, 0.8); /* Более прозрачный фон */
+    background: rgba(255, 255, 255, 0.75); /* Более прозрачный фон */
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
-    padding: 1.5rem 0.6rem; /* Уменьшенный padding */
+    padding: 1.2rem 0.5rem; /* Уменьшенный padding */
     display: none;
     opacity: 0;
     z-index: 1200;
