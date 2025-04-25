@@ -1036,6 +1036,26 @@ footer {
 
 /* Обновлённые стили для мобильного меню */
 @media (max-width: 768px) {
+  .container {
+    padding-top: 0; /* Убираем padding-top */
+    width: 100%; /* Полная ширина */
+    max-width: none; /* Убираем ограничение max-width */
+  }
+
+  .header-flex {
+    padding: 0; /* Убираем боковые отступы */
+    width: 100%; /* Полная ширина */
+    max-width: none; /* Убираем ограничение max-width */
+    margin: 0; /* Убираем центрирование */
+  }
+
+  .header-center {
+    position: relative; /* Делаем .header-center позиционированным родителем */
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
   .nav-toggle {
     display: flex; /* Убедимся, что бургер-меню видно */
   }
@@ -1043,21 +1063,20 @@ footer {
   .main-nav {
     position: absolute;
     top: 100%;
-    left: 0;
-    right: 0;
-    width: 90vw; /* Уменьшаем ширину до 90% ширины viewport */
-    margin: 0 auto; /* Центрируем с помощью margin */
-    transform: none; /* Убираем transform, так как используем margin */
-    background: #ffffff;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75vw; /* Уменьшенная ширина */
+    margin: 0;
+    background: rgba(255, 255, 255, 0.85); /* Прозрачный фон */
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
-    padding: 2.5rem 1rem; /* Добавляем боковые отступы */
+    padding: 1.8rem 0.8rem; /* Уменьшенный padding */
     display: none;
     opacity: 0;
     z-index: 1200;
-    border-radius: 0 0 24px 24px;
-    box-shadow: 0 8px 32px rgba(60,60,100,0.13);
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 8px 32px rgba(60, 60, 100, 0.13);
     text-align: center;
     transition: opacity 0.23s ease, display 0.23s ease;
   }
@@ -1133,6 +1152,7 @@ footer {
     transform: translateY(0);
   }
 }
+
 .site-header {
   height: 72px;
   display: flex;
