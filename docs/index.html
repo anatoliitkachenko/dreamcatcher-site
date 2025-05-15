@@ -227,7 +227,7 @@
       </div>
     </div>
     <div class="faq-item">
-      <button class="faq-question" data-i18n="faqQuestion6">Що таке «одноразовий аналіз»?</button>
+      <button class="faq-question" data-i18n="faqQuestion6">Що таке «разовий аналіз»?</button>
       <div class="faq-answer" data-i18n="faqAnswer6">
         Це глибокий аналіз одного сну за 40 грн. Після завершення аналізу доступ до сервісу закривається автоматично.
       </div>
@@ -368,32 +368,59 @@ function onTelegramAuth(user) {
     ? 'http://localhost:8000'
     : 'https://dreamcatcher.guru';
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const payForm = document.getElementById('pay-form');
-    if (payForm) {
-      payForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const userId = document.getElementById('tg_user_id')?.value;
-        const planType = document.getElementById('plan_type')?.value;
-        const username = document.getElementById('tg_username')?.value;
-        const firstName = document.getElementById('tg_firstname')?.value;
+    document.addEventListener('DOMContentLoaded', () => {
+  const payForm = document.getElementById('pay-form');
+  if (payForm) {
+    payForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-        if (!userId || !planType) return;
+      // Получаем данные из формы
+      const userId = document.getElementById('tg_user_id')?.value;
+      const planType = document.getElementById('plan_type')?.value;
+      const username = document.getElementById('tg_username')?.value;
+      const firstName = document.getElementById('tg_firstname')?.value;
 
-        try {
-          const res = await fetch(`${apiBaseUrl}/create-checkout-session`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user_id: userId, plan_type: planType, username, first_name: firstName })
+      if (!userId || !planType) {
+        alert('Виберіть тариф і увійдіть через Telegram!');
+        return;
+      }
+
+      try {
+        // Запрашиваем backend для получения данных WayForPay
+        const res = await fetch('/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId, plan_type: planType, username, first_name: firstName })
+        });
+        const data = await res.json();
+        if (data.pay_url && data.payment_form) {
+          // Создаём форму для отправки на WayForPay
+          const form = document.createElement('form');
+          form.action = data.pay_url;
+          form.method = 'POST';
+          form.style.display = 'none';
+
+          Object.entries(data.payment_form).forEach(([key, value]) => {
+            // если массив (productName и др), возьми первый элемент
+            if (Array.isArray(value)) value = value[0];
+            const input = document.createElement('input');
+            input.name = key;
+            input.value = value;
+            form.appendChild(input);
           });
-          const data = await res.json();
-          if (data.url) window.location.href = data.url;
-        } catch (error) {
-          console.error('Payment error:', error);
+
+          document.body.appendChild(form);
+          form.submit(); // Отправляем форму на WayForPay
+        } else {
+          alert('Не удалось создать платёжную сессию');
         }
-      });
-    }
-  });
+      } catch (error) {
+        console.error('Ошибка оплаты:', error);
+        alert('Сталася помилка при створенні платежу.');
+      }
+    });
+  }
+});
 </script>
 
 <script>
