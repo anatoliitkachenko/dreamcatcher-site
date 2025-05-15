@@ -2,7 +2,6 @@ import os
 import threading
 from datetime import datetime, timedelta
 import asyncio
-import stripe
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -19,16 +18,6 @@ load_dotenv()
 MONGO_URI = os.getenv("MONGO_URI")
 if not MONGO_URI:
     raise RuntimeError("MONGO_URI is not set in .env")
-
-STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
-STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
-SUBSCRIPTION_PRICE_ID = os.getenv("STRIPE_SUBSCRIPTION_PRICE_ID")
-ONE_TIME_PRICE_ID = os.getenv("STRIPE_ONE_TIME_PRICE_ID")
-if not all([STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SUBSCRIPTION_PRICE_ID, ONE_TIME_PRICE_ID]):
-    raise RuntimeError("Stripe keys and price IDs must be set in .env")
-
-# Инициализация Stripe
-stripe.api_key = STRIPE_SECRET_KEY
 
 # MongoDB
 mongo = AsyncIOMotorClient(MONGO_URI)
@@ -61,73 +50,6 @@ class CheckoutSession(BaseModel):
 @app.get("/")
 async def root():
     return {"msg": "Dreamcatcher backend online!"}
-
-# Создание страницы оплаты через Stripe
-@app.post("/create-checkout-session")
-async def create_checkout_session(session: CheckoutSession):
-    if session.plan_type not in ("subscription", "one_time"):
-        raise HTTPException(status_code=400, detail="Invalid plan_type")
-
-    price_id = SUBSCRIPTION_PRICE_ID if session.plan_type == "subscription" else ONE_TIME_PRICE_ID
-    mode = "subscription" if session.plan_type == "subscription" else "payment"
-
-    stripe_session = stripe.checkout.Session.create(
-        payment_method_types=["card"],
-        line_items=[{"price": price_id, "quantity": 1}],
-        mode=mode,
-        success_url=f"{FRONTEND_URL}/success?session_id={{CHECKOUT_SESSION_ID}}",
-        cancel_url=f"{FRONTEND_URL}/cancel",
-        metadata={"user_id": session.user_id, "plan_type": session.plan_type}
-    )
-
-    # Сохраняем сессию в БД
-    await db.checkout_sessions.insert_one({
-        "_id": stripe_session.id,
-        "user_id": session.user_id,
-        "plan_type": session.plan_type,
-        "created": datetime.now(VIENNA_TZ)
-    })
-
-    return {"url": stripe_session.url}
-
-# Webhook Stripe
-@app.post("/webhook")
-async def stripe_webhook(request: Request):
-    payload = await request.body()
-    sig_header = request.headers.get('stripe-signature')
-    try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, STRIPE_WEBHOOK_SECRET
-        )
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail="Invalid payload")
-    except stripe.error.SignatureVerificationError:
-        raise HTTPException(status_code=400, detail="Invalid signature")
-
-    if event['type'] == 'checkout.session.completed':
-        sess = event['data']['object']
-        session_id = sess['id']
-        rec = await db.checkout_sessions.find_one({"_id": session_id})
-        if rec:
-            user_id = rec['user_id']
-            plan = rec['plan_type']
-            if plan == 'subscription':
-                end = datetime.now(VIENNA_TZ) + timedelta(days=30)
-                await db.subscriptions.update_one(
-                    {"user_id": user_id},
-                    {"$set": {"is_active": True, "end_date": end.isoformat()}},
-                    upsert=True
-                )
-            else:
-                # Одиночная покупка, можно хранить отдельно
-                await db.payments.insert_one({
-                    "user_id": user_id,
-                    "session_id": session_id,
-                    "amount": sess['amount_total'],
-                    "currency": sess['currency'],
-                    "paid_at": datetime.now(VIENNA_TZ)
-                })
-    return {"status": "ok"}
 
 @app.post("/send-message")
 async def send_message(user_id: str, message: str):
