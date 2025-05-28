@@ -108,8 +108,7 @@
 
                 // URL вашего FastAPI бэкенда.
                 // Используем относительный путь, так как Nginx проксирует запросы с того же домена.
-                const backendUrl = '/api/pay/create-checkout-session';                // Если FastAPI на другом домене или поддомене, укажите полный URL:
-                // const backendUrl = 'https://api.yourdomain.com/create-checkout-session';
+                const backendUrl = 'https://payapi.dreamcatcher.guru/api/pay/create-checkout-session';
 
                 console.log('Requesting payment session from:', backendUrl);
                 console.log('Payload:', JSON.stringify({ user_id: userId, plan_type: planType }));
