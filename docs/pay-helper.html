@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru"> <head>
+    <meta charset="UTF-8">
+    <title>Обработка платежа...</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f6f8;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            padding: 30px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        .loader {
+            border: 6px solid #e0e0e0; /* Светло-серый */
+            border-top: 6px solid #007bff; /* Синий, как пример */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1.2s linear infinite;
+            margin: 25px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .error-message {
+            color: #d9534f; /* Красный для ошибок */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p id="message">Обработка вашего платежа, пожалуйста, подождите...</p>
+        <div class="loader" id="loader"></div>
+    </div>
+
+    <script>
+        // Локализация текстов
+        const SCRIPT_TEXTS = {
+            ru: {
+                processing: "Обработка вашего платежа, пожалуйста, подождите...",
+                redirecting: "Перенаправление на страницу оплаты...",
+                error_missing_details: "Ошибка: Отсутствуют детали платежа (ID пользователя или тип плана). Пожалуйста, попробуйте снова из бота.",
+                error_request_failed: "Ошибка запроса к серверу.",
+                error_generic: "Произошла ошибка. Пожалуйста, попробуйте снова или обратитесь в поддержку."
+            },
+            uk: {
+                processing: "Обробка вашого платежу, будь ласка, зачекайте...",
+                redirecting: "Перенаправлення на сторінку оплати...",
+                error_missing_details: "Помилка: Відсутні деталі платежу (ID користувача або тип плану). Будь ласка, спробуйте знову з бота.",
+                error_request_failed: "Помилка запиту до сервера.",
+                error_generic: "Виникла помилка. Будь ласка, спробуйте знову або зверніться до підтримки."
+            },
+            en: {
+                processing: "Processing your payment, please wait...",
+                redirecting: "Redirecting to payment gateway...",
+                error_missing_details: "Error: Missing payment details (user_id or plan_type). Please try again from the bot.",
+                error_request_failed: "Server request failed.",
+                error_generic: "An error occurred. Please try again or contact support."
+            }
+        };
+
+        async function initPayment() {
+            const messageElement = document.getElementById('message');
+            const loaderElement = document.getElementById('loader');
+            
+            let userLang = 'ru'; // Язык по умолчанию
+
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const userId = urlParams.get('user_id');
+                const planType = urlParams.get('plan_type');
+                const langParam = urlParams.get('lang');
+
+                if (langParam && SCRIPT_TEXTS[langParam]) {
+                    userLang = langParam;
+                    document.documentElement.lang = userLang; // Устанавливаем язык для HTML документа
+                }
+                messageElement.textContent = SCRIPT_TEXTS[userLang].processing;
+
+
+                if (!userId || !planType) {
+                    messageElement.textContent = SCRIPT_TEXTS[userLang].error_missing_details;
+                    messageElement.classList.add('error-message');
+                    loaderElement.style.display = 'none';
+                    return;
+                }
+
+                // URL вашего FastAPI бэкенда.
+                // Используем относительный путь, так как Nginx проксирует запросы с того же домена.
+                const backendUrl = '/create-checkout-session';
+                // Если FastAPI на другом домене или поддомене, укажите полный URL:
+                // const backendUrl = 'https://api.yourdomain.com/create-checkout-session';
+
+                console.log('Requesting payment session from:', backendUrl);
+                console.log('Payload:', JSON.stringify({ user_id: userId, plan_type: planType }));
+
+                const response = await fetch(backendUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: userId,    // FastAPI ожидает user_id
+                        plan_type: planType // и plan_type
+                        // username и first_name не передаются из бота на эту страницу,
+                        // но FastAPI бэкенд может их получить из своей базы данных по user_id, если они нужны для WayForPay
+                    }),
+                });
+
+                if (!response.ok) {
+                    let errorDetail = SCRIPT_TEXTS[userLang].error_request_failed;
+                    try {
+                        const errorData = await response.json();
+                        errorDetail = errorData.detail || errorDetail;
+                    } catch (e) {
+                        // Ошибка парсинга JSON, используем текстовый ответ
+                        errorDetail = await response.text() || errorDetail;
+                    }
+                    throw new Error(errorDetail + ` (Status: ${response.status})`);
+                }
+
+                const paymentSession = await response.json();
+                console.log('Received payment session:', paymentSession);
+
+                const wayforpayUrl = paymentSession.pay_url; // Должен быть "https://secure.wayforpay.com/pay"
+                const formData = paymentSession.payment_form_data; // Словарь с данными для формы
+
+                if (!wayforpayUrl || !formData) {
+                    throw new Error("Invalid payment session data received from server.");
+                }
+
+                // Создаем и отправляем форму
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = wayforpayUrl;
+                form.style.display = 'none'; // Форма невидима
+
+                for (const key in formData) {
+                    if (formData.hasOwnProperty(key)) {
+                        // WayForPay ожидает массивы productName[], productCount[], productPrice[]
+                        // как несколько полей с одинаковым именем (например, productName[] = значение1, productName[] = значение2)
+                        if (Array.isArray(formData[key])) {
+                            formData[key].forEach(value => {
+                                const hiddenField = document.createElement('input');
+                                hiddenField.type = 'hidden';
+                                hiddenField.name = key; // Имя поля будет, например, productName[]
+                                hiddenField.value = value;
+                                form.appendChild(hiddenField);
+                            });
+                        } else {
+                            const hiddenField = document.createElement('input');
+                            hiddenField.type = 'hidden';
+                            hiddenField.name = key;
+                            hiddenField.value = formData[key];
+                            form.appendChild(hiddenField);
+                        }
+                    }
+                }
+
+                document.body.appendChild(form);
+                messageElement.textContent = SCRIPT_TEXTS[userLang].redirecting;
+                loaderElement.style.animationPlayState = 'paused'; // Можно остановить анимацию перед редиректом
+                console.log('Submitting form to WayForPay...');
+                form.submit();
+
+            } catch (error) {
+                console.error('Payment initialization error:', error);
+                messageElement.textContent = `${SCRIPT_TEXTS[userLang].error_generic} (${error.message})`;
+                messageElement.classList.add('error-message');
+                loaderElement.style.display = 'none';
+            }
+        }
+
+        // Запускаем процесс при загрузке страницы
+        window.onload = initPayment;
+    </script>
+</body>
+</html>
