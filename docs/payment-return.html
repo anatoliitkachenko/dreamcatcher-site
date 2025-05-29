@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статус вашего платежа - Dreamcatcher</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f6f8;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            padding: 30px 40px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            max-width: 450px;
+            width: 100%;
+        }
+        h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .status-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        .success {
+            color: #28a745; /* Зеленый */
+        }
+        .error {
+            color: #dc3545; /* Красный */
+        }
+        .pending {
+            color: #ffc107; /* Желтый */
+        }
+        .info {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-top: 25px;
+        }
+        .button-link {
+            display: inline-block;
+            padding: 12px 25px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: background-color 0.2s ease;
+        }
+        .button-link:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="status-icon" class="status-icon">⏳</div>
+        <h2 id="status-title">Обработка вашего платежа...</h2>
+        <p id="status-details">Пожалуйста, подождите.</p>
+        <p id="order-info" class="info"></p>
+        <a href="https://t.me/DreamHelperPsyBot" class="button-link">Вернуться в бот</a>
+        </div>
+
+    <script>
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const transactionStatus = params.get('transactionStatus');
+            const orderReference = params.get('orderReference');
+            const reason = params.get('reason');
+            // const reasonCode = params.get('reasonCode'); // Можно использовать для более детальной информации об ошибке
+
+            const statusIconEl = document.getElementById('status-icon');
+            const statusTitleEl = document.getElementById('status-title');
+            const statusDetailsEl = document.getElementById('status-details');
+            const orderInfoEl = document.getElementById('order-info');
+
+            let lang = params.get('lang') || 'ru'; // Попробуем получить язык из параметра, если бот его передает
+
+            // Простые тексты, можно вынести в объект локализации, как в pay-helper.html, если нужно
+            const texts = {
+                ru: {
+                    approvedTitle: "✅ Оплата успешно получена!",
+                    approvedDetails: "Спасибо! Ваш доступ должен быть активирован в ближайшее время. Вы можете вернуться в бот.",
+                    declinedTitle: "❌ Оплата отклонена",
+                    declinedDetailsBase: "К сожалению, ваш платёж не прошел.",
+                    declinedDetailsReason: "Причина: ",
+                    pendingTitle: "⏳ Платёж в обработке",
+                    pendingDetails: "Ваш платёж обрабатывается. Обычно это занимает несколько минут. Пожалуйста, проверьте статус в боте немного позже.",
+                    unknownTitle: "⏳ Статус платежа неизвестен",
+                    unknownDetails: "Если вы совершили платёж, он обрабатывается. Пожалуйста, проверьте статус в боте.",
+                    orderInfo: "Номер заказа: "
+                },
+                // Добавьте uk и en по аналогии, если нужно
+            };
+
+            const currentTexts = texts[lang] || texts.ru; // По умолчанию русский
+
+            if (transactionStatus === 'Approved') {
+                statusIconEl.textContent = '✅';
+                statusIconEl.className = 'status-icon success';
+                statusTitleEl.textContent = currentTexts.approvedTitle;
+                statusDetailsEl.textContent = currentTexts.approvedDetails;
+            } else if (transactionStatus === 'Declined') {
+                statusIconEl.textContent = '❌';
+                statusIconEl.className = 'status-icon error';
+                statusTitleEl.textContent = currentTexts.declinedTitle;
+                let declineReason = reason ? `${currentTexts.declinedDetailsReason}${reason}` : "";
+                statusDetailsEl.textContent = `${currentTexts.declinedDetailsBase} ${declineReason} Пожалуйста, попробуйте снова или свяжитесь с поддержкой.`;
+            } else if (transactionStatus === 'Pending' || transactionStatus === 'Processing') {
+                statusIconEl.textContent = '⏳';
+                statusIconEl.className = 'status-icon pending';
+                statusTitleEl.textContent = currentTexts.pendingTitle;
+                statusDetailsEl.textContent = currentTexts.pendingDetails;
+            } else { // Unknown или любой другой статус
+                statusIconEl.textContent = '⏳';
+                statusIconEl.className = 'status-icon pending';
+                statusTitleEl.textContent = currentTexts.unknownTitle;
+                statusDetailsEl.textContent = currentTexts.unknownDetails;
+            }
+
+            if (orderReference) {
+                orderInfoEl.textContent = `${currentTexts.orderInfo}${orderReference}`;
+            }
+
+            // Уведомляем родительское окно (если pay-helper.html открывался в новом окне/iframe и должен был его закрыть)
+            // и затем пытаемся закрыть текущее окно. Это не всегда работает из-за ограничений браузера.
+            if (window.opener) {
+                window.opener.postMessage('paymentReturn', '*');
+            }
+            // Автоматическое закрытие окна может быть заблокировано браузером.
+            // Пользователь может просто нажать "Вернуться в бот".
+            // setTimeout(() => {
+            //     // Попытка закрыть окно. Не всегда работает.
+            //     window.open('', '_self', ''); // Попытка "обнулить" окно перед закрытием
+            //     window.close();
+            // }, 7000); // Закрыть через 7 секунд
+        };
+    </script>
+</body>
+</html>
