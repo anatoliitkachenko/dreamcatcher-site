@@ -59,6 +59,10 @@
             const userId = urlParams.get('user_id');
             const planType = urlParams.get('plan_type');
             const langParam = urlParams.get('lang');
+            const clientFirstName = urlParams.get('client_first_name');
+            const clientLastName = urlParams.get('client_last_name');
+            const clientPhone = urlParams.get('client_phone');
+            const clientEmail = urlParams.get('client_email');
 
             if (langParam && SCRIPT_TEXTS[langParam]) {
                 userLang = langParam;
@@ -71,25 +75,26 @@
                 return;
             }
 
-            // ❗ ПРОВЕРИТЬ/НАСТРОИТЬ: URL вашего FastAPI бэкенда
             const backendApiUrl = 'https://payapi.dreamcatcher.guru/api/pay/get-widget-params'; 
             
             try {
                 console.log(`Requesting widget params from ${backendApiUrl} with user_id: ${userId}, plan_type: ${planType}, lang: ${userLang}`);
+
+                let requestBody = { 
+                    user_id: userId, 
+                    plan_type: planType, 
+                    lang: userLang
+                };
+
+                if (clientFirstName) requestBody.client_first_name = clientFirstName;
+                if (clientLastName) requestBody.client_last_name = clientLastName;
+                if (clientPhone) requestBody.client_phone = clientPhone;
+                if (clientEmail) requestBody.client_email = clientEmail;
+
                 const response = await fetch(backendApiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        user_id: userId, 
-                        plan_type: planType, 
-                        lang: userLang
-                        // Если вы решили передавать client_first_name и т.д. из бота на эту страницу,
-                        // то их нужно взять из urlParams и добавить сюда в тело запроса
-                        // client_first_name: urlParams.get('client_first_name') || undefined,
-                        // client_last_name: urlParams.get('client_last_name') || undefined,
-                        // client_email: urlParams.get('client_email') || undefined,
-                        // client_phone: urlParams.get('client_phone') || undefined
-                    })
+                    body: JSON.stringify(requestBody)
                 });
 
                 if (!response.ok) {
